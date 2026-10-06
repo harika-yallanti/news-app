@@ -6,6 +6,9 @@ function Home() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("All");
+
   useEffect(() => {
     fetchNews();
   }, []);
@@ -24,23 +27,106 @@ function Home() {
     }
   };
 
+  // Search and category filtering
+  const filteredNews = news.filter((item) => {
+    const matchesSearch = item.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    const matchesCategory =
+      category === "All" || item.category === category;
+
+    return matchesSearch && matchesCategory;
+  });
+
   if (loading) {
-    return <h2>Loading news...</h2>;
+    return (
+      <div className="loading">
+        <div className="spinner"></div>
+        <p>Loading latest news...</p>
+      </div>
+    );
   }
 
   return (
-    <div className="home">
-      <h1>Latest News</h1>
+    <main className="home">
 
-      <div className="news-grid">
-        {news.map((item) => (
-          <NewsCard
-            key={item._id}
-            news={item}
+      {/* Hero Section */}
+      <section className="hero">
+        <p className="hero-label">STAY INFORMED</p>
+
+        <h1>Latest News</h1>
+
+        <p className="hero-text">
+          Discover the latest stories, updates and insights
+          across technology, sports, business, health and entertainment.
+        </p>
+      </section>
+
+      {/* Search and Filter */}
+      <section className="filters">
+
+        <div className="search-box">
+          <span>🔍</span>
+
+          <input
+            type="text"
+            placeholder="Search news by title..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
-        ))}
+        </div>
+
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="All">All Categories</option>
+          <option value="Technology">Technology</option>
+          <option value="Sports">Sports</option>
+          <option value="Business">Business</option>
+          <option value="Health">Health</option>
+          <option value="Entertainment">Entertainment</option>
+        </select>
+
+      </section>
+
+      {/* News heading */}
+      <div className="news-heading">
+        <div>
+          <h2>Latest Stories</h2>
+          <p>
+            {filteredNews.length} article
+            {filteredNews.length !== 1 ? "s" : ""} found
+          </p>
+        </div>
       </div>
-    </div>
+
+      {/* News Cards */}
+      <section className="news-grid">
+
+        {filteredNews.length > 0 ? (
+          filteredNews.map((item) => (
+            <NewsCard
+              key={item._id}
+              news={item}
+            />
+          ))
+        ) : (
+          <div className="no-news">
+            <div className="no-news-icon">📰</div>
+
+            <h3>No news found</h3>
+
+            <p>
+              Try searching with a different title or category.
+            </p>
+          </div>
+        )}
+
+      </section>
+
+    </main>
   );
 }
 

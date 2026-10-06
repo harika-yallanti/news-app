@@ -17,7 +17,6 @@ function EditNews() {
 
   const [loading, setLoading] = useState(true);
 
-  // Get existing news article
   useEffect(() => {
     fetchNews();
   }, [id]);
@@ -36,7 +35,6 @@ function EditNews() {
     }
   };
 
-  // Update form values
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -44,7 +42,6 @@ function EditNews() {
     });
   };
 
-  // Update news
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -64,77 +61,164 @@ function EditNews() {
   };
 
   if (loading) {
-    return <h2>Loading...</h2>;
+    return (
+      <div className="loading">
+        <div className="spinner"></div>
+        <p>Loading article...</p>
+      </div>
+    );
   }
 
   return (
-    <div className="form-container">
-      <h1>Edit News</h1>
+    <main className="form-page">
 
-      <form onSubmit={handleSubmit}>
+      <div className="form-header">
+        <p className="form-label">NEWS MANAGEMENT</p>
+        <h1>Edit News</h1>
+        <p>
+          Update the information below and save your changes.
+        </p>
+      </div>
 
-        <input
-          type="text"
-          name="title"
-          placeholder="News Title"
-          value={formData.title}
-          onChange={handleChange}
-          required
-        />
+      <div className="form-container">
 
-        <input
-          type="text"
-          name="description"
-          placeholder="Short Description"
-          value={formData.description}
-          onChange={handleChange}
-          required
-        />
+        <form onSubmit={handleSubmit}>
 
-        <textarea
-          name="content"
-          placeholder="News Content"
-          value={formData.content}
-          onChange={handleChange}
-          rows="8"
-          required
-        />
+          {/* Title */}
+          <div className="form-group">
+            <label htmlFor="title">
+              News Title
+            </label>
 
-        <select
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-        >
-          <option value="Technology">Technology</option>
-          <option value="Sports">Sports</option>
-          <option value="Business">Business</option>
-          <option value="Health">Health</option>
-          <option value="Entertainment">Entertainment</option>
-        </select>
+            <input
+              id="title"
+              type="text"
+              name="title"
+              placeholder="Enter news title"
+              value={formData.title}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <input
-          type="text"
-          name="author"
-          placeholder="Author Name"
-          value={formData.author}
-          onChange={handleChange}
-          required
-        />
+          {/* Description */}
+          <div className="form-group">
+            <label htmlFor="description">
+              Short Description
+            </label>
 
-        <input
-          type="text"
-          name="image"
-          placeholder="Image URL"
-          value={formData.image}
-          onChange={handleChange}
-        />
+            <textarea
+              id="description"
+              name="description"
+              placeholder="Enter a short description"
+              value={formData.description}
+              onChange={handleChange}
+              rows="3"
+              required
+            />
+          </div>
 
-        <button type="submit">
-          Update News
-        </button>
+          {/* Content */}
+          <div className="form-group">
+            <label htmlFor="content">
+              Full Article
+            </label>
 
-      </form>
-    </div>
+            <textarea
+              id="content"
+              name="content"
+              placeholder="Write the full news article..."
+              value={formData.content}
+              onChange={handleChange}
+              rows="10"
+              required
+            />
+          </div>
+
+          {/* Category */}
+          <div className="form-group">
+            <label htmlFor="category">
+              Category
+            </label>
+
+            <select
+              id="category"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+            >
+              <option value="Technology">Technology</option>
+              <option value="Sports">Sports</option>
+              <option value="Business">Business</option>
+              <option value="Health">Health</option>
+              <option value="Entertainment">
+                Entertainment
+              </option>
+            </select>
+          </div>
+
+          {/* Author */}
+          <div className="form-group">
+            <label htmlFor="author">
+              Author Name
+            </label>
+
+            <input
+              id="author"
+              type="text"
+              name="author"
+              placeholder="Enter author name"
+              value={formData.author}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          {/* Image */}
+          <div className="form-group">
+            <label htmlFor="image">
+              Image URL
+            </label>
+
+            <input
+              id="image"
+              type="text"
+              name="image"
+              placeholder="https://example.com/image.jpg"
+              value={formData.image}
+              onChange={handleChange}
+            />
+
+            <small>
+              Optional. Add a URL for the article image.
+            </small>
+          </div>
+
+          {/* Buttons */}
+          <div className="form-actions">
+
+            <button
+              type="button"
+              className="cancel-button"
+              onClick={() => navigate(`/news/${id}`)}
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              className="submit-button"
+            >
+              Update News
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </main>
   );
 }
 

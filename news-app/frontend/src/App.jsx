@@ -4,6 +4,7 @@ import AddNews from "./pages/AddNews";
 import NewsDetails from "./pages/NewsDetails";
 import EditNews from "./pages/EditNews";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/news/:id" element={<NewsDetails />} />
         <Route path="/edit/:id" element={<EditNews />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }
